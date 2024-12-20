@@ -69,6 +69,7 @@ public class ClientServiceImpl implements ClientService {
         Client client = ClientConverter.toClient(clientRequest);
         return clientRepository.save(client)
                 .map(ClientConverter::toClientResponse)
+                .doOnError(e -> log.error("Error creating client", e))
                 .onErrorMap(e -> new Exception("Error creating client", e));
     }
 
