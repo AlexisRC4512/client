@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080
     description: Local server
 paths:
-  /v1/clients:
+  /api/v1/client:
     get:
       summary: Get all clients
       operationId: getAllClients
@@ -54,7 +54,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /v1/clients/{id}:
+  /api/v1/client/{id}:
     get:
       summary: Get a client by ID
       operationId: getClientById

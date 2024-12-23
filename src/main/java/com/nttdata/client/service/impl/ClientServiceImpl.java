@@ -3,7 +3,7 @@ package com.nttdata.client.service.impl;
 import com.nttdata.client.model.entity.Client;
 import com.nttdata.client.model.exception.ClientNotFoundException;
 import com.nttdata.client.model.exception.InvalidClientDataException;
-import com.nttdata.client.model.response.ClientRequest;
+import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
 import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.ClientService;
@@ -50,6 +50,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(id)
                 .map(ClientConverter::toClientResponse)
                 .switchIfEmpty(Mono.error(new ClientNotFoundException("Client not found with id: " + id)))
+                .doOnError(e -> log.error("Error fetching client with id: {}", id, e))
                 .onErrorMap(e -> new Exception("Error fetching client by id", e));
     }
 
@@ -69,6 +70,7 @@ public class ClientServiceImpl implements ClientService {
         Client client = ClientConverter.toClient(clientRequest);
         return clientRepository.save(client)
                 .map(ClientConverter::toClientResponse)
+                .doOnError(e -> log.error("Error creating client", e))
                 .onErrorMap(e -> new Exception("Error creating client", e));
     }
 

@@ -1,6 +1,8 @@
-package com.nttdata.client.model.response;
+package com.nttdata.client.model.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.nttdata.client.model.enums.TypeClient;
+import com.nttdata.client.util.ClientTypeDeserializer;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,6 +10,7 @@ import lombok.*;
 @Getter
 public class ClientRequest {
     private String name;
+    @JsonDeserialize(using = ClientTypeDeserializer.class)
     private TypeClient type;
     private Integer documentNumber;
     private String address;
