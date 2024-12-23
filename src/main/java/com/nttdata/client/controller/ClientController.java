@@ -1,6 +1,6 @@
 package com.nttdata.client.controller;
 
-import com.nttdata.client.model.response.ClientRequest;
+import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
 import com.nttdata.client.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/v1/client")
+@RequestMapping("/api/v1/client")
 public class ClientController {
 
     @Autowired
@@ -22,7 +22,6 @@ public class ClientController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Mono<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
         return clientService.createClient(clientRequest);
     }
@@ -38,7 +37,6 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteClient(@PathVariable String id) {
         return clientService.deleteClient(id);
     }

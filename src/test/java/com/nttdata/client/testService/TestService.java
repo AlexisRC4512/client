@@ -3,22 +3,24 @@ package com.nttdata.client.testService;
 import com.nttdata.client.model.entity.Client;
 import com.nttdata.client.model.enums.TypeClient;
 import com.nttdata.client.model.exception.InvalidClientDataException;
-import com.nttdata.client.model.response.ClientRequest;
+import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.impl.ClientServiceImpl;
 import com.nttdata.client.util.ClientConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
+@ExtendWith(MockitoExtension.class)
 public class TestService {
     @Mock
     private ClientRepository clientRepository;
@@ -28,7 +30,7 @@ public class TestService {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+
     }
 
     @Test

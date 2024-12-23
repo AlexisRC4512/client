@@ -1,6 +1,6 @@
 package com.nttdata.client.service;
 
-import com.nttdata.client.model.response.ClientRequest;
+import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

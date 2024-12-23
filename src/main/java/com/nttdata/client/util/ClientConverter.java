@@ -2,7 +2,7 @@ package com.nttdata.client.util;
 
 
 import com.nttdata.client.model.entity.Client;
-import com.nttdata.client.model.response.ClientRequest;
+import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
 
 public class ClientConverter {
