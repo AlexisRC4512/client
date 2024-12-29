@@ -22,6 +22,7 @@ public class ClientConverter {
         client.setAddress(request.getAddress());
         client.setPhone(request.getPhone());
         client.setEmail(request.getEmail());
+        client.setSubType(request.getSubTypeClient());
         return client;
     }
 
@@ -40,6 +41,7 @@ public class ClientConverter {
         response.setAddress(client.getAddress());
         response.setPhone(client.getPhone());
         response.setEmail(client.getEmail());
+        response.setSubTypeClient(client.getSubType());
         return response;
     }
 }
