@@ -8,6 +8,7 @@ import com.nttdata.client.model.response.ClientResponse;
 import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.ClientService;
 import com.nttdata.client.util.ClientConverter;
+import com.nttdata.client.util.ClientValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,9 @@ public class ClientServiceImpl implements ClientService {
         if (clientRequest == null || clientRequest.getName() == null) {
             log.warn("Invalid client data: {}", clientRequest);
             return Mono.error(new InvalidClientDataException("Invalid client data"));
+        }
+        if (!ClientValidator.isValidSubtipo(clientRequest.getType(), clientRequest.getSubTypeClient())) {
+            throw new IllegalArgumentException("The subtype " + clientRequest.getType() + " is not valid for the type " + clientRequest.getSubTypeClient());
         }
         log.info("Creating new client: {}", clientRequest.getName());
         Client client = ClientConverter.toClient(clientRequest);

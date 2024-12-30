@@ -1,23 +1,43 @@
 package com.nttdata.client.model.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.nttdata.client.model.enums.SubTypeClient;
 import com.nttdata.client.model.enums.TypeClient;
+import com.nttdata.client.util.ClientSubTypeDeserializer;
 import com.nttdata.client.util.ClientTypeDeserializer;
 import lombok.*;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class ClientRequest {
     private String name;
+
     @JsonDeserialize(using = ClientTypeDeserializer.class)
     private TypeClient type;
+
     private Integer documentNumber;
+
     private String address;
+
     private String phone;
+
     private String email;
 
+    @JsonDeserialize(using = ClientSubTypeDeserializer.class)
+    private SubTypeClient subTypeClient;
 
+    public ClientRequest(String name, TypeClient type, Integer documentNumber, String address, String phone, String email, SubTypeClient subTypeClient) {
+        setName(name);
+        setType(type);
+        setAddress(address);
+        setDocumentNumber(documentNumber);
+        setEmail(email);
+        setPhone(phone);
+        setSubTypeClient(subTypeClient);
+    }
+    public void setSubTypeClient(SubTypeClient subTypeClient) {
+        this.subTypeClient = subTypeClient;
+    }
 
     public void setName(String name) {
         if (name == null || name.isEmpty()) {

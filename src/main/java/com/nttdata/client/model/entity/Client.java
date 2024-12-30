@@ -1,5 +1,6 @@
 package com.nttdata.client.model.entity;
 
+import com.nttdata.client.model.enums.SubTypeClient;
 import com.nttdata.client.model.enums.TypeClient;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -31,10 +32,10 @@ public class Client {
      * Type of the client (e.g., individual, company).
      */
     private TypeClient type;
-
     /**
      * Document number of the client.
      */
+
     private Integer documentNumber;
 
     /**
@@ -51,4 +52,9 @@ public class Client {
      * Email address of the client.
      */
     private String email;
+    /**
+     * Type of the subType client (e.g., 	VIP, PYME).
+     */
+
+    private SubTypeClient subType;
 }

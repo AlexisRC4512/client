@@ -161,6 +161,12 @@ components:
           enum:
             - personal
             - business
+        subType:
+          type: string
+          enum:
+            - pyme
+            - normal
+            - vip
         documentNumber:
           type: integer
         address:
@@ -179,6 +185,12 @@ components:
           enum:
             - personal
             - business
+        subType:
+          type: string
+          enum:
+            - pyme
+            - normal
+            - vip
         documentNumber:
           type: integer
         address:
@@ -213,6 +225,12 @@ components:
           type: string
         email:
           type: string
+        subType:
+          type: string
+          enum:
+            - pyme
+            - normal
+            - vip
     ErrorResponse:
       type: object
       properties:
