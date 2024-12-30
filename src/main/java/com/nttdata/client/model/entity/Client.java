@@ -35,6 +35,7 @@ public class Client {
     /**
      * Document number of the client.
      */
+
     private Integer documentNumber;
 
     /**
@@ -52,7 +53,8 @@ public class Client {
      */
     private String email;
     /**
-     * Type of the sub type client (e.g., 	VIP, PYME).
+     * Type of the subType client (e.g., 	VIP, PYME).
      */
-    private SubTypeClient SubType;
+
+    private SubTypeClient subType;
 }

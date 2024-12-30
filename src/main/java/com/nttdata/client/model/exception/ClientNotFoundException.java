@@ -1,7 +1,9 @@
 package com.nttdata.client.model.exception;
+
 /**
  * Exception thrown when a client is not found.
  */
+
 public class ClientNotFoundException extends RuntimeException {
     /**
      * Constructs a new ClientNotFoundException with the specified detail message.

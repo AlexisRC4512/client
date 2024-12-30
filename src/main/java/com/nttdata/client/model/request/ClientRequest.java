@@ -5,19 +5,24 @@ import com.nttdata.client.model.enums.SubTypeClient;
 import com.nttdata.client.model.enums.TypeClient;
 import com.nttdata.client.util.ClientSubTypeDeserializer;
 import com.nttdata.client.util.ClientTypeDeserializer;
-import com.nttdata.client.util.ClientValidator;
 import lombok.*;
 
 @NoArgsConstructor
 @Getter
 public class ClientRequest {
     private String name;
+
     @JsonDeserialize(using = ClientTypeDeserializer.class)
     private TypeClient type;
+
     private Integer documentNumber;
+
     private String address;
+
     private String phone;
+
     private String email;
+
     @JsonDeserialize(using = ClientSubTypeDeserializer.class)
     private SubTypeClient subTypeClient;
 

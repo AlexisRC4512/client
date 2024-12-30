@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.nttdata.client.model.enums.SubTypeClient;
-import com.nttdata.client.model.enums.TypeClient;
 
 import java.io.IOException;
 
