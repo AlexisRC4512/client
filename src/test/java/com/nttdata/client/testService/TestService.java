@@ -16,9 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class TestService {
     @Mock
@@ -27,10 +27,7 @@ public class TestService {
     @InjectMocks
     private ClientServiceImpl clientService;
 
-    @BeforeEach
-    public void setUp() {
 
-    }
 
     @Test
     public void testGetAllClients() {

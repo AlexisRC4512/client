@@ -9,11 +9,15 @@ import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.ClientService;
 import com.nttdata.client.util.ClientConverter;
 import com.nttdata.client.util.ClientValidator;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+
 
 /**
  * Implementation of the ClientService interface.
@@ -32,6 +36,8 @@ public class ClientServiceImpl implements ClientService {
      * @return a Flux of ClientResponse containing all clients.
      */
     @Override
+    @CircuitBreaker(name = "client", fallbackMethod = "fallbackGetAllClients")
+    @TimeLimiter(name = "client")
     public Flux<ClientResponse> getAllClients() {
         log.info("Fetching all clients");
         return clientRepository.findAll()
@@ -46,6 +52,8 @@ public class ClientServiceImpl implements ClientService {
      * @return a Mono of ClientResponse with the client details.
      */
     @Override
+    @CircuitBreaker(name = "client", fallbackMethod = "fallbackGetClientById")
+    @TimeLimiter(name = "client")
     public Mono<ClientResponse> getClientById(String id) {
         log.debug("Fetching client with id: {}", id);
         return clientRepository.findById(id)
@@ -62,6 +70,8 @@ public class ClientServiceImpl implements ClientService {
      * @return a Mono of ClientResponse with the created client.
      */
     @Override
+    @CircuitBreaker(name = "client", fallbackMethod = "fallbackCreateClient")
+    @TimeLimiter(name = "client")
     public Mono<ClientResponse> createClient(ClientRequest clientRequest) {
         if (clientRequest == null || clientRequest.getName() == null) {
             log.warn("Invalid client data: {}", clientRequest);
@@ -86,6 +96,8 @@ public class ClientServiceImpl implements ClientService {
      * @return a Mono of ClientResponse with the updated client.
      */
     @Override
+    @CircuitBreaker(name = "client", fallbackMethod = "fallbackUpdateClient")
+    @TimeLimiter(name = "client")
     public Mono<ClientResponse> updateClient(String id, ClientRequest clientRequest) {
         if (clientRequest == null || clientRequest.getName() == null) {
             log.warn("Invalid client data for update: {}", clientRequest);
@@ -110,11 +122,40 @@ public class ClientServiceImpl implements ClientService {
      * @return a Mono<Void> indicating completion.
      */
     @Override
+    @CircuitBreaker(name = "client", fallbackMethod = "fallbackDeleteClient")
+    @TimeLimiter(name = "client")
     public Mono<Void> deleteClient(String id) {
         log.debug("Deleting client with id: {}", id);
         return clientRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ClientNotFoundException("Client not found with id: " + id)))
                 .flatMap(existingClient -> clientRepository.delete(existingClient))
                 .onErrorMap(e -> new Exception("Error deleting client", e));
+    }
+
+
+
+    public Flux<ClientResponse> fallbackGetAllClients(Exception exception) {
+        log.error("Fallback method for getAllClients", exception);
+        return Flux.error(new Exception("Fallback method for getAllClients"));
+    }
+
+    public Mono<ClientResponse> fallbackGetClientById(Exception exception) {
+        log.error("Fallback method for getClientById", exception);
+        return Mono.error(new Exception("Fallback method for getClientById"));
+    }
+
+    public Mono<ClientResponse> fallbackCreateClient(Exception exception) {
+        log.error("Fallback method for createClient", exception);
+        return Mono.error(new Exception("Fallback method for createClient"));
+    }
+
+    public Mono<ClientResponse> fallbackUpdateClient(Exception exception) {
+        log.error("Fallback method for updateClient", exception);
+        return Mono.error(new Exception("Fallback method for updateClient"));
+    }
+
+    public Mono<Void> fallbackDeleteClient(Exception exception) {
+        log.error("Fallback method for deleteClient", exception);
+        return Mono.error(new Exception("Fallback method for deleteClient"));
     }
 }
