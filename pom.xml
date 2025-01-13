@@ -29,6 +29,11 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.6</spring-cloud.version>
+		<sonar.host.url>http://localhost:9001</sonar.host.url>
+		<sonar.token>sqp_6c0922fa54455628b016d364ba1e1f2b306f7a76</sonar.token>
+		<sonar.projectKey>client</sonar.projectKey>
+		<sonar.projectName>client</sonar.projectName>
+		<sonar.exclusions>pom.xml</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -214,6 +219,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -225,6 +231,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.8.0.2131</version>
 			</plugin>
 		</plugins>
 	</build>

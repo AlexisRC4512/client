@@ -7,7 +7,6 @@ import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.impl.ClientServiceImpl;
 import com.nttdata.client.util.ClientConverter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
