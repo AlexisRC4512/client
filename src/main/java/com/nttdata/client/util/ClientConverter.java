@@ -4,6 +4,9 @@ package com.nttdata.client.util;
 import com.nttdata.client.model.entity.Client;
 import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
+
+import java.util.UUID;
+
 /**
  * Utility class for converting between Client and ClientRequest/ClientResponse objects.
  */
@@ -16,6 +19,7 @@ public class ClientConverter {
      */
     public static Client toClient(ClientRequest request) {
         Client client = new Client();
+        client.setId(UUID.randomUUID().toString());
         client.setName(request.getName());
         client.setType(request.getType());
         client.setDocumentNumber(request.getDocumentNumber());
