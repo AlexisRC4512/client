@@ -1,5 +1,6 @@
 package com.nttdata.client.controller;
 
+import com.nttdata.client.api.ApiApi;
 import com.nttdata.client.model.request.ClientRequest;
 import com.nttdata.client.model.response.ClientResponse;
 import com.nttdata.client.service.ClientService;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/client")
 @RequiredArgsConstructor
-public class ClientController {
+public class ClientController implements ApiApi {
 
 
     private final ClientService clientService;

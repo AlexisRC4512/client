@@ -5,8 +5,6 @@ import com.nttdata.client.model.enums.TypeClient;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientResponse {

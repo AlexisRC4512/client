@@ -30,10 +30,11 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.6</spring-cloud.version>
 		<sonar.host.url>http://localhost:9001</sonar.host.url>
-		<sonar.token>sqp_6c0922fa54455628b016d364ba1e1f2b306f7a76</sonar.token>
+		<sonar.token>sqp_7d922dcf5fadd105c5cb621b3e85c53d90f78144</sonar.token>
 		<sonar.projectKey>client</sonar.projectKey>
 		<sonar.projectName>client</sonar.projectName>
 		<sonar.exclusions>pom.xml</sonar.exclusions>
+		<sonar.exclusions>pom.xml,**/model/**</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -194,6 +195,30 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/ms-client-api.yml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>com.nttdata.client.api</apiPackage>
+							<modelPackage>com.nttdata.client.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<reactive>true</reactive>
+								<delegatePattern>true</delegatePattern>
+							</configOptions>
+							<enablePostProcessFile>true</enablePostProcessFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<!--Exclusiones para reporte de cobertura-->
@@ -201,6 +226,10 @@
 					<excludes>
 						<exclude>com/nttdata/client/ClientApplicationTests.java</exclude>
 						<exclude>com/nttdata/client/testService/TestService.java</exclude>
+						<exclude>com/nttdata/client/repository/ClientRepositoryTests.java</exclude>
+						<exclude>com/nttdata/client/testService/ClientServiceFallbackTests.java</exclude>
+						<exclude>com/nttdata/client/model/**</exclude>
+						<exclude>com/nttdata/client/api/**</exclude>
 					</excludes>
 				</configuration>
 				<!--Exclusiones para reporte de cobertura-->

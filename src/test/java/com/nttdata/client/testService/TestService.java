@@ -3,7 +3,9 @@ package com.nttdata.client.testService;
 import com.nttdata.client.model.entity.Client;
 import com.nttdata.client.model.enums.SubTypeClient;
 import com.nttdata.client.model.enums.TypeClient;
+import com.nttdata.client.model.exception.InvalidClientDataException;
 import com.nttdata.client.model.request.ClientRequest;
+import com.nttdata.client.model.response.ClientResponse;
 import com.nttdata.client.respository.ClientRepository;
 import com.nttdata.client.service.impl.ClientServiceImpl;
 import com.nttdata.client.util.ClientConverter;
@@ -29,7 +31,7 @@ public class TestService {
 
 
     @Test
-    public void testGetAllClients() {
+    void testGetAllClients() {
         Client client1 = new Client("1", "Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com", SubTypeClient.NORMAL);
         Client client2 = new Client("2", "Client2", TypeClient.BUSINESS, 654321, "Address2", "0987654321", "client2@example.com", SubTypeClient.NORMAL);
 
@@ -42,7 +44,7 @@ public class TestService {
     }
 
     @Test
-    public void testGetAllClientsError() {
+    void testGetAllClientsError() {
         when(clientRepository.findAll()).thenReturn(Flux.error(new RuntimeException("Database error")));
         StepVerifier.create(clientService.getAllClients())
                 .expectErrorMatches(throwable -> throwable instanceof Exception &&
@@ -51,7 +53,7 @@ public class TestService {
     }
 
     @Test
-    public void testGetClientById() {
+    void testGetClientById() {
         Client client = new Client("1", "Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com",SubTypeClient.NORMAL);
 
         when(clientRepository.findById("1")).thenReturn(Mono.just(client));
@@ -61,7 +63,7 @@ public class TestService {
     }
 
     @Test
-    public void testGetClientByIdNotFound() {
+    void testGetClientByIdNotFound() {
         when(clientRepository.findById("1")).thenReturn(Mono.empty());
 
         StepVerifier.create(clientService.getClientById("1"))
@@ -71,7 +73,7 @@ public class TestService {
     }
 
     @Test
-    public void testCreateClient() {
+    void testCreateClient() {
         ClientRequest clientRequest = new ClientRequest("Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com",SubTypeClient.NORMAL);
         Client client = new Client("1", "Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com",SubTypeClient.NORMAL);
 
@@ -80,10 +82,19 @@ public class TestService {
                 .expectNext(ClientConverter.toClientResponse(client))
                 .verifyComplete();
     }
+    @Test
+    void testCreateClientInvalidData() {
+        ClientRequest clientRequest = null;
 
+        Mono<ClientResponse> result = clientService.createClient(clientRequest);
+        StepVerifier.create(result)
+                .expectErrorMatches(throwable -> throwable instanceof InvalidClientDataException &&
+                        throwable.getMessage().equals("Invalid client data"))
+                .verify();
+    }
 
     @Test
-    public void testUpdateClient() {
+    void testUpdateClient() {
         ClientRequest clientRequest = new ClientRequest("UpdatedClient", TypeClient.BUSINESS, 654321, "UpdatedAddress", "0987654321", "updatedclient@example.com",SubTypeClient.NORMAL);
         Client existingClient = new Client("1", "Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com",SubTypeClient.NORMAL);
         Client updatedClient = new Client("1", "UpdatedClient", TypeClient.BUSINESS, 654321, "UpdatedAddress", "0987654321", "updatedclient@example.com",SubTypeClient.NORMAL);
@@ -94,9 +105,18 @@ public class TestService {
                 .expectNext(ClientConverter.toClientResponse(updatedClient))
                 .verifyComplete();
     }
-
     @Test
-    public void testUpdateClientNotFound() {
+    void testUpdateClientInvalidData() {
+        ClientRequest clientRequest = null;
+
+        Mono<ClientResponse> result = clientService.updateClient("1",clientRequest);
+        StepVerifier.create(result)
+                .expectErrorMatches(throwable -> throwable instanceof InvalidClientDataException &&
+                        throwable.getMessage().equals("Invalid client data"))
+                .verify();
+    }
+    @Test
+    void testUpdateClientNotFound() {
         ClientRequest clientRequest = new ClientRequest("UpdatedClient", TypeClient.BUSINESS, 654321, "UpdatedAddress", "0987654321", "updatedclient@example.com",SubTypeClient.NORMAL);
 
         when(clientRepository.findById("1")).thenReturn(Mono.empty());
@@ -108,7 +128,7 @@ public class TestService {
     }
 
     @Test
-    public void testDeleteClient() {
+    void testDeleteClient() {
         Client client = new Client("1", "Client1", TypeClient.PERSONAL, 123456, "Address1", "1234567890", "client1@example.com",SubTypeClient.NORMAL);
 
         when(clientRepository.findById("1")).thenReturn(Mono.just(client));
@@ -119,7 +139,7 @@ public class TestService {
     }
 
     @Test
-    public void testDeleteClientNotFound() {
+    void testDeleteClientNotFound() {
         when(clientRepository.findById("1")).thenReturn(Mono.empty());
         StepVerifier.create(clientService.deleteClient("1"))
                 .expectErrorMatches(throwable -> throwable instanceof Exception &&
