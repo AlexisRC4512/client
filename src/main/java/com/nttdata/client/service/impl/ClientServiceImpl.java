@@ -11,12 +11,13 @@ import com.nttdata.client.util.ClientConverter;
 import com.nttdata.client.util.ClientValidator;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.nttdata.client.util.constans.ConstantsMessage.CLIENT_NOT_FOUND;
 
 
 /**
@@ -25,10 +26,11 @@ import reactor.core.publisher.Mono;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-    @Autowired
-    private ClientRepository clientRepository;
+
+    private final ClientRepository clientRepository;
 
     /**
      * Retrieve all clients.
@@ -58,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
         log.debug("Fetching client with id: {}", id);
         return clientRepository.findById(id)
                 .map(ClientConverter::toClientResponse)
-                .switchIfEmpty(Mono.error(new ClientNotFoundException("Client not found with id: " + id)))
+                .switchIfEmpty(Mono.error(new ClientNotFoundException(CLIENT_NOT_FOUND + id)))
                 .doOnError(e -> log.error("Error fetching client with id: {}", id, e))
                 .onErrorMap(e -> new Exception("Error fetching client by id", e));
     }
@@ -105,7 +107,7 @@ public class ClientServiceImpl implements ClientService {
         }
         log.debug("Updating client with id: {}", id);
         return clientRepository.findById(id)
-                .switchIfEmpty(Mono.error(new ClientNotFoundException("Client not found with id: " + id)))
+                .switchIfEmpty(Mono.error(new ClientNotFoundException(CLIENT_NOT_FOUND + id)))
                 .flatMap(existingClient -> {
                     Client updatedClient = ClientConverter.toClient(clientRequest);
                     updatedClient.setId(existingClient.getId());
@@ -127,7 +129,7 @@ public class ClientServiceImpl implements ClientService {
     public Mono<Void> deleteClient(String id) {
         log.debug("Deleting client with id: {}", id);
         return clientRepository.findById(id)
-                .switchIfEmpty(Mono.error(new ClientNotFoundException("Client not found with id: " + id)))
+                .switchIfEmpty(Mono.error(new ClientNotFoundException(CLIENT_NOT_FOUND + id)))
                 .flatMap(existingClient -> clientRepository.delete(existingClient))
                 .onErrorMap(e -> new Exception("Error deleting client", e));
     }
