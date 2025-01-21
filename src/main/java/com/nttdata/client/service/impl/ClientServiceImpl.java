@@ -37,9 +37,9 @@ public class ClientServiceImpl implements ClientService {
      *
      * @return a Flux of ClientResponse containing all clients.
      */
-    @Override
     @CircuitBreaker(name = "client", fallbackMethod = "fallbackGetAllClients")
     @TimeLimiter(name = "client")
+    @Override
     public Flux<ClientResponse> getAllClients() {
         log.info("Fetching all clients");
         return clientRepository.findAll()
@@ -53,9 +53,9 @@ public class ClientServiceImpl implements ClientService {
      * @param id the ID of the client to retrieve.
      * @return a Mono of ClientResponse with the client details.
      */
-    @Override
     @CircuitBreaker(name = "client", fallbackMethod = "fallbackGetClientById")
     @TimeLimiter(name = "client")
+    @Override
     public Mono<ClientResponse> getClientById(String id) {
         log.debug("Fetching client with id: {}", id);
         return clientRepository.findById(id)
@@ -71,9 +71,9 @@ public class ClientServiceImpl implements ClientService {
      * @param clientRequest the request body containing client details.
      * @return a Mono of ClientResponse with the created client.
      */
-    @Override
     @CircuitBreaker(name = "client", fallbackMethod = "fallbackCreateClient")
     @TimeLimiter(name = "client")
+    @Override
     public Mono<ClientResponse> createClient(ClientRequest clientRequest) {
         if (clientRequest == null || clientRequest.getName() == null) {
             log.warn("Invalid client data: {}", clientRequest);
@@ -97,9 +97,9 @@ public class ClientServiceImpl implements ClientService {
      * @param clientRequest the request body containing updated client details.
      * @return a Mono of ClientResponse with the updated client.
      */
-    @Override
     @CircuitBreaker(name = "client", fallbackMethod = "fallbackUpdateClient")
     @TimeLimiter(name = "client")
+    @Override
     public Mono<ClientResponse> updateClient(String id, ClientRequest clientRequest) {
         if (clientRequest == null || clientRequest.getName() == null) {
             log.warn("Invalid client data for update: {}", clientRequest);
@@ -123,9 +123,9 @@ public class ClientServiceImpl implements ClientService {
      * @param id the ID of the client to delete.
      * @return a Mono<Void> indicating completion.
      */
-    @Override
     @CircuitBreaker(name = "client", fallbackMethod = "fallbackDeleteClient")
     @TimeLimiter(name = "client")
+    @Override
     public Mono<Void> deleteClient(String id) {
         log.debug("Deleting client with id: {}", id);
         return clientRepository.findById(id)
